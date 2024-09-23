@@ -12,10 +12,12 @@ public class HibernateListar {
         /*Para poder trabajar con JPA Hibernate*/
         EntityManager em = JpaUtil.getEntityManager();
 
-        String query = "SELECT c FROM Cliente c";
-        List<Cliente> clientes = em.createQuery(query).getResultList();
+        String query;
 
+        query = "SELECT c FROM Cliente c";
+        List<Cliente> clientes = em.createQuery(query, Cliente.class).getResultList();
         clientes.forEach(System.out::println);
+
 
         em.close(); /*Cerrar conexión a la BD*/
     }
