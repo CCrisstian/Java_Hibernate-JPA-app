@@ -75,3 +75,55 @@ public class Cliente {
 
 - Define una relación donde <b>muchas</b> instancias de una entidad están relacionadas con <b>muchas</b> instancias de otra entidad.
 - Normalmente, esto se mapea con una tabla intermedia que contiene las claves foráneas de ambas tablas.
+
+<h1 align="center">EntityManager</h1>
+<p>El <b>EntityManager</b> es una interfaz clave en JPA (Java Persistence API) que gestiona las operaciones relacionadas con las entidades (clases que están mapeadas a tablas de la base de datos) en una aplicación Java. Su principal función es gestionar el ciclo de vida de las entidades y facilitar las interacciones con la base de datos.</p>
+
+- <b>EntityManager</b> es responsable de crear, leer, actualizar y eliminar entidades dentro de una unidad de persistencia.
+- Es una abstracción que actúa como un intermediario entre la aplicación Java y la base de datos, gestionando las operaciones de persistencia de manera eficiente.
+- Permite realizar transacciones, ejecutar consultas (como HQL o SQL nativo) y mantener el contexto de persistencia para asegurar que los objetos están sincronizados con la base de datos.
+
+<h2>¿Para qué sirve?</h2>
+
+- <b>Persistir entidades</b>: Permite insertar nuevas entidades en la base de datos.
+```java
+EntityManager em = entityManagerFactory.createEntityManager();
+em.getTransaction().begin();
+em.persist(cliente);  // Persiste un objeto de tipo Cliente
+em.getTransaction().commit();
+em.close();
+```
+
+- <b>Encontrar entidades</b>: Recupera una entidad por su clave primaria desde la base de datos.
+```java
+Cliente cliente = em.find(Cliente.class, 1L);  // Encuentra un Cliente con id=1
+```
+
+- <b>Eliminar entidades: Elimina una entidad de la base de datos.
+```java
+em.getTransaction().begin();
+Cliente cliente = em.find(Cliente.class, 1L);
+em.remove(cliente);  // Elimina el objeto Cliente de la base de datos
+em.getTransaction().commit();
+```
+
+- <b>Actualizar entidades (Merge)</b>: Si se ha hecho alguna modificación a una entidad fuera del contexto de persistencia, se utiliza merge para sincronizar los cambios en la base de datos.
+```java
+em.getTransaction().begin();
+Cliente clienteActualizado = em.merge(cliente);
+em.getTransaction().commit();
+```
+
+- <b>Ejecutar consultas</b>: Permite crear y ejecutar consultas con HQL (Hibernate Query Language) o SQL nativo.
+```java
+Query query = em.createQuery("SELECT c FROM Cliente c WHERE c.nombre = :nombre");
+query.setParameter("nombre", "Juan");
+List<Cliente> clientes = query.getResultList();
+```
+
+- <b>Gestionar transacciones</b>: Puede iniciar y gestionar transacciones para garantizar la atomicidad y consistencia de las operaciones de persistencia.
+```java
+em.getTransaction().begin();
+// Realizar varias operaciones (persist, remove, etc.)
+em.getTransaction().commit();  // Confirma la transacción
+```
