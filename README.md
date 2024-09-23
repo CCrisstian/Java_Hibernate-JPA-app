@@ -18,3 +18,37 @@
 <h2>Criteria API</h2>
 <p><b>Criteria API</b> es una API de Hibernate que permite construir consultas de manera programática. Esto resulta útil cuando las consultas son dinámicas o se basan en varias condiciones que se conocen en tiempo de ejecución. Este enfoque es muy flexible y evita tener que escribir consultas en cadena de texto.</p>
 <h2>Sql Nativo</h2>
+<p>Hibernate también permite ejecutar consultas <b>SQL nativas</b> directamente, lo que es útil cuando se requieren operaciones complejas o específicas a nivel de base de datos que no pueden realizarse fácilmente con HQL o Criteria API. Las consultas nativas trabajan directamente con las tablas de la base de datos, por lo que se pierde el mapeo objeto-relacional en estos casos.</p>
+
+<h1 align="center">Clase Entidad</h1>
+<p>Una <b>clase entidad</b> en el contexto de <b>Java con Hibernate (o JPA - Java Persistence API)</b> es una clase de Java que está mapeada a una tabla de base de datos. Las instancias de esta clase representan filas de la tabla, y los atributos de la clase corresponden a las columnas de la tabla. Hibernate utiliza estas clases para realizar el mapeo objeto-relacional (ORM), es decir, para convertir entre los objetos de Java y los registros de la base de datos.</p>
+
+```java
+@Entity
+public class Cliente {
+    
+    @Id
+    private Long id;
+
+    private String nombre;
+
+    private String apellido;
+
+    @Column(name = "forma_pago")
+    private Date formaPago;
+
+    // Getters y setters
+}
+```
+
+- `@Entity`:
+  - La anotación `@Entity` indica que esta clase de Java es una entidad y que estará mapeada a una tabla en la base de datos. Hibernate la utilizará para realizar el mapeo.
+  - Hibernate creará o utilizará una tabla (con el nombre de la clase `Cliente`, a menos que se especifique otro nombre con `@Table`) que tendrá las columnas correspondientes a los atributos de la clase.
+- `@Id`:
+  - `@Id` marca el atributo `id` como la clave primaria de la entidad. Este campo será el identificador único de cada instancia de la clase `Cliente` en la base de datos.
+- Atributos (`nombre`, `apellido`, `formaPago`):
+  - Los atributos `nombre` y `apellido` se mapearán a columnas en la tabla correspondiente a la entidad `Cliente`. Por defecto, el nombre de la columna será el mismo que el nombre del atributo.
+- `@Column(name = "forma_pago")`:
+  - La anotación `@Column` se usa para personalizar el mapeo de un atributo de la entidad a una columna en la base de datos. En este caso, el atributo `formaPago` se mapeará a una columna llamada `forma_pago` en lugar de usar el nombre por defecto del campo (`formaPago`).
+- <b>Getters y Setters</b>:
+  - Los getters y setters son métodos necesarios para que Hibernate pueda acceder y modificar los valores de los atributos. Hibernate utiliza estos métodos para leer y escribir los datos de los objetos en la base de datos.
